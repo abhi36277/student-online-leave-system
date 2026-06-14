@@ -1,0 +1,34 @@
+# VS Code
+.vscode/
+
+# Java compiled files
+*.class
+
+# Logs
+*.log
+logs/
+
+# Tomcat runtime
+tomcat-9/
+
+# MySQL data directory
+mysql_data/
+
+# Generated JSP servlet files
+work/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build output
+bin/
+target/
+out/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Personal database configuration
+my.ini
