@@ -5,16 +5,25 @@ Write-Host "Ensuring MySQL is running..."
 $runningMysql = Get-Process -Name mysqld -ErrorAction SilentlyContinue
 if (-not $runningMysql) {
     Write-Host "Starting MySQL server in a new window..."
-    Start-Process -FilePath "C:\Program Files\MySQL\MySQL Server 8.4\bin\mysqld.exe" -ArgumentList "--defaults-file=`"D:\SEMESTER4\Adv_Java\Projects\Java Anti\my.ini`""
+    
+    # Dynamically generate/update my.ini with current absolute path
+    $myIniContent = @"
+[mysqld]
+port=3306
+datadir="$($PSScriptRoot.Replace('\', '/'))/mysql_data"
+"@
+    $myIniContent | Out-File -FilePath "$PSScriptRoot\my.ini" -Encoding utf8 -Force
+
+    Start-Process -FilePath "C:\Program Files\MySQL\MySQL Server 8.4\bin\mysqld.exe" -ArgumentList "--defaults-file=`"$PSScriptRoot\my.ini`""
     Start-Sleep -Seconds 4
 }
 
 # 2. Compile Java files
 Write-Host "Compiling Java files..."
-powershell -ExecutionPolicy Bypass -File .\compile_project.ps1
+powershell -ExecutionPolicy Bypass -File "$PSScriptRoot\compile_project.ps1"
 
 # 3. Clean and Deploy to Tomcat's ROOT app
-$tomcatRoot = "D:\SEMESTER4\Adv_Java\Projects\Java Anti\tomcat-9\apache-tomcat-9.0.91\webapps\ROOT"
+$tomcatRoot = "$PSScriptRoot\tomcat-9\apache-tomcat-9.0.91\webapps\ROOT"
 Write-Host "Deploying files to Tomcat ROOT..."
 
 if (Test-Path $tomcatRoot) {
@@ -25,13 +34,13 @@ if (Test-Path $tomcatRoot) {
 }
 
 # Copy WebContent contents to Tomcat ROOT
-Copy-Item -Path "WebContent\*" -Destination $tomcatRoot -Recurse -Force
+Copy-Item -Path "$PSScriptRoot\WebContent\*" -Destination $tomcatRoot -Recurse -Force
 
 # 4. Stop any existing Tomcat java process (if running)
 Write-Host "Stopping any currently running Tomcat instance..."
 $env:JAVA_HOME = "C:\Program Files\Java\jdk-25"
-$env:CATALINA_HOME = "D:\SEMESTER4\Adv_Java\Projects\Java Anti\tomcat-9\apache-tomcat-9.0.91"
-& "D:\SEMESTER4\Adv_Java\Projects\Java Anti\tomcat-9\apache-tomcat-9.0.91\bin\shutdown.bat" 2>$null | Out-Null
+$env:CATALINA_HOME = "$PSScriptRoot\tomcat-9\apache-tomcat-9.0.91"
+& "$env:CATALINA_HOME\bin\shutdown.bat" 2>$null | Out-Null
 Start-Sleep -Seconds 2
 
 # 5. Start Tomcat in the foreground
@@ -44,7 +53,7 @@ Write-Host "Keep this terminal open and running!"
 Write-Host "To stop the web server, click here and press Ctrl + C."
 Write-Host "========================================================"
 $env:JAVA_HOME = "C:\Program Files\Java\jdk-25"
-$env:CATALINA_HOME = "D:\SEMESTER4\Adv_Java\Projects\Java Anti\tomcat-9\apache-tomcat-9.0.91"
+$env:CATALINA_HOME = "$PSScriptRoot\tomcat-9\apache-tomcat-9.0.91"
 & "$env:CATALINA_HOME\bin\catalina.bat" run
 
 Write-Host "--------------------------------------------------------"

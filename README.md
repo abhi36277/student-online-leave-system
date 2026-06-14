@@ -106,7 +106,7 @@ src/com/project/util/DBConnection.java
 
 ## Running and Stopping the Project
 
-All commands should be executed from a **PowerShell** terminal window opened inside the project root folder (`D:\SEMESTER4\Adv_Java\Projects\Java Anti`).
+All commands should be executed from a **PowerShell** terminal window opened inside the project root folder (the directory containing `run_project.ps1`).
 
 ### 🚀 Starting the Project
 To start both the MySQL database and the Tomcat web application, run the following single launcher command:
