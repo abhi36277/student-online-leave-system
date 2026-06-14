@@ -97,25 +97,25 @@ src/com/project/util/DBConnection.java
 
 ---
 
-## Running the Project
+## Running and Stopping the Project
 
-### Compile
+All commands should be executed from a **PowerShell** terminal window opened inside the project root folder (`D:\SEMESTER4\Adv_Java\Projects\Java Anti`).
 
-```powershell
-.\compile_project.ps1
-```
-
-### Run
+### 🚀 Starting the Project
+To start both the MySQL database and the Tomcat web application, run the following single launcher command:
 
 ```powershell
-.\run_project.ps1
+powershell -ExecutionPolicy Bypass -File .\run_project.ps1
 ```
 
-### Open Browser
+Once the terminal prints `Starting Apache Tomcat in this terminal...`, it will launch the application automatically in your default browser at **http://localhost:8080/**.
 
-```text
-http://localhost:8080
-```
+### 🛑 Stopping the Project
+1. **Stop Web Server (Tomcat)**: Press `Ctrl + C` in the PowerShell window running Tomcat (type `Y` and press `Enter` if prompted).
+2. **Stop Database (MySQL)**: Run the following shutdown command to close the background MySQL server:
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\stop_mysql.ps1
+   ```
 
 ---
 
