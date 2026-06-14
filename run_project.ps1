@@ -6,13 +6,10 @@ $runningMysql = Get-Process -Name mysqld -ErrorAction SilentlyContinue
 if (-not $runningMysql) {
     Write-Host "Starting MySQL server in a new window..."
     
-    # Dynamically generate/update my.ini with current absolute path
-    $myIniContent = @"
-[mysqld]
-port=3306
-datadir="$($PSScriptRoot.Replace('\', '/'))/mysql_data"
-"@
-    $myIniContent | Out-File -FilePath "$PSScriptRoot\my.ini" -Encoding utf8 -Force
+    # Dynamically generate/update my.ini with current absolute path (BOM-free)
+    $myIniPath = "$PSScriptRoot\my.ini"
+    $myIniContent = "[mysqld]`r`nport=3306`r`ndatadir=`"$($PSScriptRoot.Replace('\', '/'))/mysql_data`"`r`n"
+    [System.IO.File]::WriteAllText($myIniPath, $myIniContent)
 
     Start-Process -FilePath "C:\Program Files\MySQL\MySQL Server 8.4\bin\mysqld.exe" -ArgumentList "--defaults-file=`"$PSScriptRoot\my.ini`""
     Start-Sleep -Seconds 4

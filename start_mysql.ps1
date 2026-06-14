@@ -8,13 +8,10 @@ if ($running) {
     return
 }
 
-# Dynamically generate/update my.ini with current absolute path
-$myIniContent = @"
-[mysqld]
-port=3306
-datadir="$($PSScriptRoot.Replace('\', '/'))/mysql_data"
-"@
-$myIniContent | Out-File -FilePath "$PSScriptRoot\my.ini" -Encoding utf8 -Force
+# Dynamically generate/update my.ini with current absolute path (BOM-free)
+$myIniPath = "$PSScriptRoot\my.ini"
+$myIniContent = "[mysqld]`r`nport=3306`r`ndatadir=`"$($PSScriptRoot.Replace('\', '/'))/mysql_data`"`r`n"
+[System.IO.File]::WriteAllText($myIniPath, $myIniContent)
 
 Write-Host "Starting MySQL server in a new window..."
 Start-Process -FilePath $mysqlPath -ArgumentList "--defaults-file=`"$PSScriptRoot\my.ini`""
