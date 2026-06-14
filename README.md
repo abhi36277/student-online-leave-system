@@ -13,21 +13,25 @@ This project eliminates the traditional paper-based leave application process an
 ## Features
 
 ### Student Module
-
-* Student Registration
-* Student Login
-* Apply for Leave
-* View Leave History
-* Track Leave Status
-* Logout
+* Student Registration & Login
+* Apply for Leave (with HTML5 automatic calendar toggle)
+* View Leave History with color-coded status badges
+* Dynamic DB-driven Notification panel
+* Profile & Settings modal with password change functionality
 
 ### Admin Module
-
 * Admin Login
-* View All Leave Requests
-* Approve Leave Requests
-* Reject Leave Requests
-* Monitor Leave Records
+* Centralized Leave Request Management (Approve/Reject requests)
+* College-wide statistics and analytics
+
+### Portal-Wide UX Enhancements
+* **Premium UI/UX Design**: Sleek SaaS-like dashboard interface with glassmorphism cards and smooth animations.
+* **Light/Dark Theme Switcher**: Sun/Moon toggle next to avatar with persistent user preference using `localStorage`.
+* **Interactive Chart.js Analytics**: Animated monthly leave trend line graphs and status distribution doughnut charts.
+* **Real-time Clock**: Date & time display updated in the top navigation bar.
+* **Responsive Layout**: Fluid media queries supporting full-screen monitors, standard laptops, side-by-side split screens, down to tablet and mobile screens with off-screen toggling sidebar.
+* **Toast Status Notifications**: Elegant sliding animations for servlet updates.
+* **Animated Logout**: Custom exit hover micro-animations.
 
 ---
 
@@ -64,19 +68,22 @@ This project eliminates the traditional paper-based leave application process an
 
 ```text
 src/
-├── com.project.model
-├── com.project.servlet
-└── com.project.util
+├── com/project/
+│   ├── model/           # Data Models (Student, LeaveRequest)
+│   ├── servlet/         # Business Logic Servlets (Login, Register, LeaveServlet)
+│   └── util/            # Utilities (DBConnection)
 
 WebContent/
-├── css/
-├── js/
-├── WEB-INF/
-└── *.jsp
+├── css/                 # Premium Dashboard styling (dashboard.css)
+├── js/                  # Charts & UX JavaScript (dashboard.js)
+├── WEB-INF/             # Web configuration (web.xml) & Libraries (lib/)
+└── *.jsp                # View templates (Dashboard, Apply Leave, Login)
 
-init_db.sql
-run_project.ps1
-compile_project.ps1
+init_db.sql              # Database initialization schema
+compile_project.ps1      # Java compiler execution script
+run_project.ps1          # Main project startup orchestrator
+start_mysql.ps1          # Database launcher script
+stop_mysql.ps1           # Database shutdown script
 ```
 
 ## Database Setup
@@ -134,7 +141,6 @@ Once the terminal prints `Starting Apache Tomcat in this terminal...`, it will l
 
 * Email Notifications
 * Leave Balance Management
-* Mobile Responsive Design
 * PDF Leave Reports
 * Role-Based Access Control
 * Attendance Integration
